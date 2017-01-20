@@ -59,6 +59,7 @@ shinyServer(function(input, output) {
   output$distPlot <- renderPlot({
     ## Generates the allele frequency paths and plot    
     N <- as.integer(isolate(input$N))
+    alpha <- 50
     myselection <- isolate(input$selection)
     reps <- isolate(input$replicates)
     generations <- isolate(input$gens)
@@ -99,16 +100,19 @@ shinyServer(function(input, output) {
    
    # Main plot 
    par (fig=c(0,0.8,0,1.0), mar=mar.left)
-   plot(p[,1],type="l",xlim=c(0,input$gens)
-         ,ylim=c(0,1)
-         ,ylab="Frequency of Variant Allele"
-         ,xlab="Generation",axes=FALSE
-         ,cex.lab=1.6,cex.axis=1.6
-         )
+   plot(NULL, type="l", xlim=c(0,input$gens)
+        ,ylim=c(0,1)
+        ,ylab="Frequency of Variant Allele"
+        ,xlab="Generation", axes=FALSE
+        ,cex.lab=1.6, cex.axis=1.6
+   )
 
-    apply(p,2,function(x)  {
+    apply(p, 2, function(x)  {
       succ <- 1+(x[generations]>0) + (x[generations]==1.0);
-      lines(x,col=c("red", "green", "blue")[succ],lwd=2)
+      lines(x,col=c(
+        rgb(255,0,0, max=255,alpha=alpha),
+        rgb(0, 255, 0, max=255, alpha=alpha),
+        rgb(0, 0, 255, max=255, alpha=alpha))[succ],lwd=2)
        })
    text(generations, 0.97, paste(sum(p[generations,]==1),"fixed"),col="black")
    text(generations, 0.03, paste(sum(p[generations,]==0),"lost"),col="black")
