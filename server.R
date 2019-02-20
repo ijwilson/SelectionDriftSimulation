@@ -59,9 +59,9 @@ shinyServer(function(input, output) {
   output$distPlot <- renderPlot({
     ## Generates the allele frequency paths and plot    
     N <- as.integer(isolate(input$N))
-    alpha <- 50
+    alpha <- 80
     myselection <- isolate(input$selection)
-    reps <- isolate(input$replicates)
+    pops <- isolate(input$pops)
     generations <- isolate(input$gens)
     s <- isolate(input$s)
     startingP <- isolate(input$startingP)
@@ -86,7 +86,7 @@ shinyServer(function(input, output) {
         start <- rmultinom(1,N,prob=c(0.25,0.5,0.25))
     }
 
-   p <-  replicate(reps,
+   p <-  replicate(pops,
                    sim(generations, start=start, s=sels))
    breaks <- seq(0,1,by=0.02)
    hs <- hist(p[generations,], breaks=breaks, plot=FALSE)
