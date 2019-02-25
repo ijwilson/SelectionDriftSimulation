@@ -26,7 +26,7 @@ shinyUI(fluidPage(
     ),
    column(4,
           numericInput("gens", "Number of Generations", value=100 , min=100, max=1000, step=100),
-          numericInput("pops", "Populations", value=10, min=1, max=40, step=2),
+          numericInput("pops", "Replicates", value=100, min=1, max=1000, step=100),
           actionButton("run","Go!")
   )),
   plotOutput("distPlot")
